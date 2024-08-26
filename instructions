@@ -1,0 +1,51 @@
+Setup Instructions
+Using Visual Studio
+Clone the Repository:
+
+Open Visual Studio.
+Go to File > Open > Project/Solution.
+In the Open Project dialog, select Clone or check out code.
+Enter the repository URL: https://github.com/yourusername/simple-image-gallery.git.
+Click Clone.
+Open the Project:
+
+Visual Studio will open the project. If it doesn't open automatically, go to File > Open > Project/Solution and select SimpleImageGallery.sln.
+Restore Dependencies:
+
+Go to Tools > NuGet Package Manager > Package Manager Console.
+Run dotnet restore to install the necessary dependencies.
+Build the Solution:
+
+Go to Build > Build Solution or press Ctrl+Shift+B.
+Ensure the build succeeds with no errors.
+Run the Application:
+
+Press F5 or click the Start button in Visual Studio.
+The application will launch in your default web browser, typically at https://localhost:5001.
+Navigate to the Gallery:
+
+Open your browser and go to https://localhost:5001/Gallery/Index to access the image gallery.
+Using Visual Studio Code
+Clone the Repository:
+
+Open Visual Studio Code.
+Open the integrated terminal (`Ctrl+``).
+Run git clone https://github.com/yourusername/simple-image-gallery.git.
+Navigate to the project folder: cd simple-image-gallery.
+Open the Project:
+
+Open the project folder in Visual Studio Code by selecting File > Open Folder and choosing the cloned repository folder.
+Restore Dependencies:
+
+In the terminal, run dotnet restore to install the necessary dependencies.
+Build the Solution:
+
+Run dotnet build in the terminal.
+Ensure the build completes successfully.
+Run the Application:
+
+Use the terminal to run dotnet run.
+The application will be available at https://localhost:5001.
+Navigate to the Gallery:
+
+Open your browser and go to https://localhost:5001/Gallery/Index to access the image gallery.
