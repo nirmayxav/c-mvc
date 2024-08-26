@@ -1,0 +1,60 @@
+<form asp-action="Upload" method="post" enctype="multipart/form-data">
+    <div>
+        <label for="Title">Image Title:</label>
+        <input type="text" name="Title" required />
+    </div>
+    <div>
+        <label for="ImageFile">Select Image:</label>
+        <input type="file" name="ImageFile" required />
+    </div>
+    <button type="submit">Upload</button>
+</form>
+
+
+
+asp-action="Upload": Specifies the action method to handle form submission (the Upload method in the GalleryController).
+method="post": Specifies that the form uses POST to submit data.
+enctype="multipart/form-data": Indicates that the form will upload files.
+name="Title": Name attribute for the image title input field.
+name="ImageFile": Name attribute for the file input field.
+button type="submit": Submits the form data to the server.
+
+
+
+
+<h3>Uploaded Images</h3>
+<div>
+    @if (Model.Count == 0)
+    {
+        <p>No images uploaded yet.</p>
+    }
+    else
+    {
+        <ul>
+            @foreach (var image in Model)
+            {
+                <li>
+                    <img src="@image.FilePath" alt="@image.Title" width="200" />
+                    <p>@image.Title</p>
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@image.Id" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+
+
+
+
+
+@if (Model.Count == 0): Checks if there are no images.
+<ul>: Displays the list of images.
+@foreach (var image in Model): Loops through each image in the model.
+<img src="@image.FilePath" alt="@image.Title" width="200" />: Displays the image with a fixed width of 200 pixels.
+<form asp-action="Delete" method="post">: Form for deleting an image.
+input type="hidden" name="id" value="@image.Id": Hidden field to pass the image ID for deletion.
+button type="submit": Submits the form to delete the image.
