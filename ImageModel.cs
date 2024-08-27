@@ -1,9 +1,15 @@
-namespace SimpleImageGallery.Models
+using System.ComponentModel.DataAnnotations;
+
+public class ImageModel
 {
-    public class ImageModel
-    {
-        public int Id { get; set; }          // Unique identifier for the image
-        public string Title { get; set; }    // Title of the image
-        public string FilePath { get; set; } // Path to the image file on the server
-    }
+    public int Id { get; set; }
+
+    [Required]
+    [Display(Name = "Image Title")]
+    public string Title { get; set; }
+
+    [Required]
+    public byte[] ImageData { get; set; }
+
+    public string ContentType { get; set; }
 }
