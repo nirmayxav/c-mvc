@@ -1,43 +1,22 @@
-@model List<SimpleImageGallery.Models.ImageModel>
+@model IEnumerable<ImageModel>
 
-<h2>Image Gallery</h2>
-
-<!-- Form to upload a new image -->
-<form asp-action="Upload" method="post" enctype="multipart/form-data">
-    <div>
-        <label for="Title">Image Title:</label>
-        <input type="text" name="Title" required />
+<div class="container">
+    <h2 class="text-center">Image Gallery</h2>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="data:@item.ContentType;base64,@Convert.ToBase64String(item.ImageData)" alt="@item.Title" class="img-fluid" />
+                    <div class="caption text-center">
+                        <h4>@item.Title</h4>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-    <div>
-        <label for="ImageFile">Select Image:</label>
-        <input type="file" name="ImageFile" required />
+    <div class="text-center">
+        <a asp-action="Create" class="btn btn-primary">Add New Image</a>
     </div>
-    <button type="submit">Upload</button>
-</form>
-
-<hr />
-
-<!-- Display uploaded images -->
-<h3>Uploaded Images</h3>
-<div>
-    @if (Model.Count == 0)
-    {
-        <p>No images uploaded yet.</p>
-    }
-    else
-    {
-        <ul>
-            @foreach (var image in Model)
-            {
-                <li>
-                    <img src="@image.FilePath" alt="@image.Title" width="200" />
-                    <p>@image.Title</p>
-                    <form asp-action="Delete" method="post">
-                        <input type="hidden" name="id" value="@image.Id" />
-                        <button type="submit">Delete</button>
-                    </form>
-                </li>
-            }
-        </ul>
-    }
 </div>
