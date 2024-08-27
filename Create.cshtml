@@ -1,0 +1,22 @@
+@model ImageModel
+
+<div class="container">
+    <h2 class="text-center">Add New Image</h2>
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="ImageFile">Upload Image</label>
+            <input type="file" class="form-control-file" name="ImageFile" required />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Upload" class="btn btn-primary" />
+        </div>
+    </form>
+    <div class="text-center">
+        <a asp-action="Index" class="btn btn-secondary">Back to Gallery</a>
+    </div>
+</div>
