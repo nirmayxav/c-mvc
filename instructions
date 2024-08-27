@@ -1,51 +1,153 @@
-Setup Instructions
-Using Visual Studio
-Clone the Repository:
+Step 1: Create a New ASP.NET Core MVC Project
+Open Visual Studio:
 
-Open Visual Studio.
-Go to File > Open > Project/Solution.
-In the Open Project dialog, select Clone or check out code.
-Enter the repository URL: https://github.com/yourusername/simple-image-gallery.git.
-Click Clone.
-Open the Project:
+Go to File > New > Project.
+Select ASP.NET Core Web Application and click Next.
+Name the project (e.g., ImageGallery) and click Create.
+Select a Project Template:
 
-Visual Studio will open the project. If it doesn't open automatically, go to File > Open > Project/Solution and select SimpleImageGallery.sln.
-Restore Dependencies:
+Choose ASP.NET Core Web App (Model-View-Controller).
+Click Create.
+Step 2: Set Up the Model for Images
+Create the Image Model:
 
-Go to Tools > NuGet Package Manager > Package Manager Console.
-Run dotnet restore to install the necessary dependencies.
-Build the Solution:
+Right-click on the Models folder and select Add > Class.
+Name the class ImageModel.cs.
+Add the following code to define the properties:
 
-Go to Build > Build Solution or press Ctrl+Shift+B.
-Ensure the build succeeds with no errors.
-Run the Application:
 
-Press F5 or click the Start button in Visual Studio.
-The application will launch in your default web browser, typically at https://localhost:5001.
-Navigate to the Gallery:
+Right-click on the Data folder and select Add > Class.
+Name it ApplicationDbContext.cs.
 
-Open your browser and go to https://localhost:5001/Gallery/Index to access the image gallery.
-Using Visual Studio Code
-Clone the Repository:
 
-Open Visual Studio Code.
-Open the integrated terminal (`Ctrl+``).
-Run git clone https://github.com/yourusername/simple-image-gallery.git.
-Navigate to the project folder: cd simple-image-gallery.
-Open the Project:
 
-Open the project folder in Visual Studio Code by selecting File > Open Folder and choosing the cloned repository folder.
-Restore Dependencies:
+Open appsettings.json and add the connection string for SQLite:
+json
+Copy code
 
-In the terminal, run dotnet restore to install the necessary dependencies.
-Build the Solution:
+"ConnectionStrings": {
+    "DefaultConnection": "Data Source=ImageGallery.db"
+}
 
-Run dotnet build in the terminal.
-Ensure the build completes successfully.
-Run the Application:
 
-Use the terminal to run dotnet run.
-The application will be available at https://localhost:5001.
-Navigate to the Gallery:
+Open Startup.cs and add the database context to the services:
+csharp
+Copy code
 
-Open your browser and go to https://localhost:5001/Gallery/Index to access the image gallery.
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+    services.AddControllersWithViews();
+}
+
+Apply Migrations:
+
+Open the Package Manager Console (Tools > NuGet Package Manager > Package Manager Console) and run the following commands:
+powershell
+Copy code
+
+Add-Migration InitialCreate
+Update-Database
+
+
+Step 4: Create the Image Controller
+Add the Controller:
+Right-click on the Controllers folder and select Add > Controller.
+Choose MVC Controller with views, using Entity Framework.
+Select ImageModel as the model class and ApplicationDbContext as the data context.
+Name the controller ImagesController.
+Step 5: Create the Views
+View for Displaying Images:
+
+In the Views/Images folder, open Index.cshtml and modify it to display images in a gallery format:
+
+
+
+Open appsettings.json and add the connection string for SQLite:
+json
+Copy code
+"ConnectionStrings": {
+    "DefaultConnection": "Data Source=ImageGallery.db"
+}
+Open Startup.cs and add the database context to the services:
+csharp
+Copy code
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+    services.AddControllersWithViews();
+}
+Apply Migrations:
+
+Open the Package Manager Console (Tools > NuGet Package Manager > Package Manager Console) and run the following commands:
+powershell
+Copy code
+Add-Migration InitialCreate
+Update-Database
+Step 4: Create the Image Controller
+Add the Controller:
+Right-click on the Controllers folder and select Add > Controller.
+Choose MVC Controller with views, using Entity Framework.
+Select ImageModel as the model class and ApplicationDbContext as the data context.
+Name the controller ImagesController.
+Step 5: Create the Views
+View for Displaying Images:
+
+In the Views/Images folder, open Index.cshtml and modify it to display images in a gallery format:
+
+Locate the ImagesController.cs file:
+
+Open the Solution Explorer in Visual Studio.
+Navigate to the Controllers folder.
+Double-click on ImagesController.cs to open it.
+Modify the Create Method:
+
+Find the Create method in the ImagesController.cs file.
+Replace the existing code with the updated code that handles image uploads using IFormFile as shown earlier:
+csharp
+Copy code
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Create(ImageModel imageModel, IFormFile ImageFile)
+{
+    if (ModelState.IsValid)
+    {
+        if (ImageFile != null && ImageFile.Length > 0)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await ImageFile.CopyToAsync(memoryStream);
+                imageModel.ImageData = memoryStream.ToArray();
+                imageModel.ContentType = ImageFile.ContentType;
+            }
+            _context.Add(imageModel);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+    }
+    return View(imageModel);
+}
+Verify the Delete Method:
+
+Ensure the Delete method is correctly implemented, which should have been automatically generated when you created the controller using scaffolding. This method should already work for deleting images from the database.
+Save the Changes:
+
+After updating the code, save the changes in ImagesController.cs.
+
+Integrate Bootstrap:
+
+Add Bootstrap CDN to the Layout.cshtml in the Views/Shared folder:
+html
+Copy code
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+Customize the Style:
+
+Use Bootstrap classes and customize your CSS to make the gallery look more appealing.
+Step 8: Run the Application
+Build and Run:
+Press F5 to build and run the application.
+Test uploading and deleting images.
